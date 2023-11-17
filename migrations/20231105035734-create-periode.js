@@ -9,6 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      roleid: {
+        type: Sequelize.INTEGER,
+      },
+
       mulai: {
         type: Sequelize.DATE,
       },

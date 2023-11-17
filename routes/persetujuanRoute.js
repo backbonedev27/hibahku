@@ -7,38 +7,38 @@ const { roleCheck } = require("../middleware/roleCheck");
 const persetujuanRoute = express.Router();
 
 persetujuanRoute.get(
-    "/list",
-    verifyToken,
-    roleCheck,
-    persetujuanController.allPersetujuan
+  "/list",
+  verifyToken,
+  roleCheck,
+  persetujuanController.allPersetujuan
 );
 
 persetujuanRoute.post(
-    "/approve/:id",
-    verifyToken,
-    roleCheck,
-    persetujuanController.createPersetujuan
+  "/approve/:id",
+  verifyToken,
+  roleCheck,
+  persetujuanController.createPersetujuan
 );
 
 persetujuanRoute.get(
-    "/detail/:id",
-    verifyToken,
-    roleCheck,
-    persetujuanController.detailPersetujuan
+  "/detail/:id",
+  verifyToken,
+  roleCheck,
+  persetujuanController.detailPersetujuan
 );
 
 persetujuanRoute.get(
-    "/download/:fileName",
-    verifyToken,
-    roleCheck,
-    persetujuanController.downloadfile
+  "/download/:fileName",
+  verifyToken,
+  roleCheck,
+  persetujuanController.downloadfile
 );
 
 persetujuanRoute.delete(
-    "/:id",
-    verifyToken,
-    roleCheck,
-    persetujuanController.hapusPersetujuan
+  "/:id",
+  verifyToken,
+  roleCheck,
+  persetujuanController.hapusPersetujuan
 );
 
 module.exports = persetujuanRoute;

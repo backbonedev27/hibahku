@@ -27,7 +27,7 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    res.json({ msg: "Selamat Datang di HIBAHKU API v1 ..." });
+  res.json({ msg: "Selamat Datang di HIBAHKU API v1 ..." });
 });
 
 app.use("/api/v1/auth", authRoute);
@@ -40,5 +40,5 @@ app.use("/api/v1/periode", periodeRoute);
 
 // Start your server
 app.listen(PORT, () => {
-    console.log(`Listening on http://localhost:${PORT}`);
+  console.log(`Listening on http://localhost:${PORT}`);
 });

@@ -22,6 +22,9 @@ const saveFile = async (file, Model) => {
         path: file[0].path,
       });
       const saved = await fileData.save();
+
+      console.log("Saved File Data:", saved);
+
       return saved || null; // Mengembalikan null jika penyimpanan gagal
     }
   } catch (error) {
@@ -62,6 +65,16 @@ const permohonan = async (req, res) => {
   const existingKeagamaan = await Keagamaan.findByPk(keagamaanID);
 
   if (!existingKeagamaan) {
+    await deleteUploadedFiles([
+      file_ktp,
+      file_rab,
+      file_suket,
+      file_burek,
+      file_sk,
+      file_proposal,
+      file_suratpermohonan,
+      file_asetrekom,
+    ]);
     return res.status(404).json({ message: "ID agama tidak terdaftar" });
   }
 
@@ -76,6 +89,16 @@ const permohonan = async (req, res) => {
     twoYearsAgo.setFullYear(currentDate.getFullYear() - 2);
 
     if (existingPermohonan.createdAt > twoYearsAgo) {
+      await deleteUploadedFiles([
+        file_ktp,
+        file_rab,
+        file_suket,
+        file_burek,
+        file_sk,
+        file_proposal,
+        file_suratpermohonan,
+        file_asetrekom,
+      ]);
       return res.status(403).json({
         message:
           "ID agama telah digunakan dalam permohonan dalam dua tahun terakhir. Silakan coba lagi setelah 2 tahun.",
@@ -94,6 +117,7 @@ const permohonan = async (req, res) => {
       saveFile(file_suratpermohonan, Suratpermohonan),
       saveFile(file_asetrekom, Asetrekom),
     ]);
+    console.log("Saved Files:", savedFiles);
 
     const permohonanData = new Permohonan({
       keagamaanid: body.keagamaanid,
@@ -112,7 +136,7 @@ const permohonan = async (req, res) => {
       prosesid: 3,
       userid: user.nik,
     });
-
+    console.log("Permohonan Data:", permohonanData);
     await permohonanData.save();
 
     return res.status(201).json({ message: "Permohonan berhasil" });

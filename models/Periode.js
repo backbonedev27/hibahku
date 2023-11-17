@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Periode.init(
     {
+      roleid: DataTypes.INTEGER,
       mulai: DataTypes.DATE,
       selesai: DataTypes.DATE,
     },

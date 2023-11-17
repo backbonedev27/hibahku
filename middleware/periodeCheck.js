@@ -1,39 +1,38 @@
 const { Op } = require("sequelize");
 const { Periode } = require("../models");
-const { User } = require("../models");
 
 const periodeCheck = async (req, res, next) => {
-    const { nik } = req?.body;
+  try {
+    const { user } = req.session;
 
-    try {
-        const currentDate = new Date();
+    // Log the user's roleid to the console
+    console.log("User:", user);
+    console.log("User Role ID:", user ? user.roleid : "Undefined");
 
-        const activePeriod = await Periode.findOne({
-            where: {
-                mulai: { [Op.lte]: currentDate },
-                selesai: { [Op.gte]: currentDate },
-            },
-        });
+    const currentDate = new Date();
 
-        if (
-            activePeriod &&
-            nik !== "1571020410940041" &&
-            nik !== "1571020410940040"
-        ) {
-            const { selesai } = activePeriod;
+    const notActivePeriod = await Periode.findOne({
+      where: {
+        mulai: { [Op.lte]: currentDate },
+        selesai: { [Op.gte]: currentDate },
+      },
+    });
 
-            return res.status(403).json({
-                message: `Mohon Maaf, Akses Ditutup hingga ${selesai}. Silakan coba lagi nanti.`,
-            });
-        }
+    if (notActivePeriod && user && user.roleid === 1) {
+      const { selesai } = notActivePeriod;
 
-        next();
-    } catch (error) {
-        console.error(error);
-        return res
-            .status(500)
-            .json({ message: "Terjadi kesalahan saat memeriksa periode." });
+      return res.status(403).json({
+        message: `Mohon Maaf, Akses Ditutup hingga ${selesai}. Silakan coba lagi nanti.`,
+      });
     }
+
+    next();
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Terjadi kesalahan saat memeriksa periode." });
+  }
 };
 
 module.exports = periodeCheck;
